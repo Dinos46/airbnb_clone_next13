@@ -1,27 +1,17 @@
+@import "/public/fonts/Nunito-Bold.ttf";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+/* UTIL CLASES */
+.container {
+  @apply max-w-[95rem] mx-auto;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+.serch-bar-item {
+  @apply shadow rounded-full flex items-center cursor-pointer hover:shadow-md transition p-[0.4rem] border-[1px];
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+.user-menu-item {
+  @apply hover:bg-gray-100 px-4 py-2 cursor-pointer transition capitalize block;
 }
