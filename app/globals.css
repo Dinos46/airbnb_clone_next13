@@ -3,6 +3,11 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body {
+  height: 100%;
+}
+
 /* UTIL CLASES */
 .container {
   @apply max-w-[95rem] mx-auto;
@@ -14,4 +19,23 @@
 
 .user-menu-item {
   @apply hover:bg-gray-100 px-4 py-2 cursor-pointer transition capitalize block;
+}
+
+.form-input {
+  @apply outline-1 outline outline-gray-200 p-1 font-nunito rounded-md;
+}
+
+.form-submit {
+  @apply bg-rose-500  text-white  text-base hover:bg-rose-500/70;
+}
+
+.btn {
+  @apply p-2 rounded-md capitalize outline-none font-nunito transition ease-in-out duration-200;
+}
+.btn-social {
+  @apply bg-white border relative border-gray-400 hover:bg-white/20;
+}
+
+.form-label {
+  @apply mb-2 text-sm text-gray-500 capitalize;
 }

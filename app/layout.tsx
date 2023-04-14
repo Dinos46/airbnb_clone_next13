@@ -21,10 +21,11 @@ export default async function RootLayout({
   children: ReactNode;
 }) {
   const logedInUser = await getLogedInUser();
+
   return (
     <html lang="en">
       <body className={`${nunito.variable} font-nunito`}>
-        <Header />
+        <Header user={logedInUser} />
 
         {children}
       </body>
