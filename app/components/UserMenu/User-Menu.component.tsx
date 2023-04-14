@@ -1,5 +1,6 @@
 "use client";
 import { useClickAwayLisiner } from "@/app/hooks/useClickAwayLisiner";
+import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
@@ -34,6 +35,9 @@ const UserMenu = () => {
             <Link href="/register" className="user-menu-item">
               sign up
             </Link>
+            <div className="user-menu-item" onClick={() => signOut()}>
+              log out
+            </div>
           </div>
         )}
       </div>

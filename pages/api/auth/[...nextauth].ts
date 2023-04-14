@@ -2,6 +2,12 @@ import NextAuth, { AuthOptions } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import CredentioalsProvider from "next-auth/providers/credentials";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import prisma from "../../../app/lib/prismaClient";
+import { ErrorMap } from "@/app/constants/errorMap";
+import { AdapterUser } from "next-auth/adapters";
+import { User } from "@prisma/client";
+
 export const authOptions: AuthOptions = {
   providers: [
     GithubProvider({
@@ -9,8 +15,8 @@ export const authOptions: AuthOptions = {
       clientSecret: process.env.GITHUB_SECRET as string,
     }),
     GoogleProvider({
-      clientId: "",
-      clientSecret: "",
+      clientId: process.env.GOOGLE_ID as string,
+      clientSecret: process.env.GOOGLE_SECRET as string,
     }),
     CredentioalsProvider({
       name: "Credentials",
@@ -19,6 +25,20 @@ export const authOptions: AuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
+        if (!credentials?.email || !credentials?.password) {
+          throw new Error(ErrorMap.invalid);
+        }
+
+        const user = await prisma.user.findUnique({
+          where: {
+            email: credentials.email,
+          },
+        });
+        console.log({ user });
+        if (user) {
+          return user;
+        }
+
         return null;
       },
     }),
@@ -26,5 +46,32 @@ export const authOptions: AuthOptions = {
   session: {
     strategy: "jwt",
   },
+  secret: process.env.NEXTAUTH_SECRET,
+  callbacks: {
+    async session({ session, user, token }) {
+      const dbUser = await prisma.user.findUnique({
+        where: {
+          email: token.email as string,
+        },
+        select: {
+          email: true,
+          id: true,
+          accounts: true,
+          name: true,
+          image: true,
+          role: true,
+        },
+      });
+
+      session.user = dbUser as Partial<User> | AdapterUser;
+      return session;
+    },
+  },
+  adapter: PrismaAdapter(prisma),
+
+  pages: {
+    signIn: "/login",
+  },
+  debug: process.env.NODE_ENV === "development",
 };
 export default NextAuth(authOptions);

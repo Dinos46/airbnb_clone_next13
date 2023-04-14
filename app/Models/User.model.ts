@@ -3,3 +3,5 @@ export interface IUserForm {
   username: string;
   password: string;
 }
+
+export type FormValues = IUserForm | Omit<IUserForm, "username">;

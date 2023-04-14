@@ -1,8 +1,8 @@
 "use client";
-import { IUserForm } from "@/app/Models/IUserForm";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-
-export type FormValues = IUserForm | Omit<IUserForm, IUserForm["username"]>;
+import { FormValues } from "@/app/Models/User.model";
+import { registerUser } from "@/app/services/userService";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { signIn } from "next-auth/react";
 
 type Props = {
   formVals: FormValues;
@@ -10,12 +10,22 @@ type Props = {
 };
 
 const Logister = ({ formVals, type }: Props) => {
-  const { register, handleSubmit } = useForm<FieldValues>({
+  const { register, handleSubmit } = useForm<FormValues>({
     defaultValues: formVals,
   });
 
-  const submitHandler: SubmitHandler<FieldValues> = (data) => {
-    console.log({ data });
+  const submitHandler: SubmitHandler<FormValues> = async (formInput) => {
+    try {
+      if (type === "register") {
+        const { data } = await registerUser(formInput);
+      }
+      signIn("credentials", {
+        ...formInput,
+        redirect: false,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -30,7 +40,7 @@ const Logister = ({ formVals, type }: Props) => {
           />
         </div>
       )}
-      <div>
+      <div className="flex flex-col">
         <label htmlFor="email">email</label>
         <input
           type="text"
@@ -38,7 +48,7 @@ const Logister = ({ formVals, type }: Props) => {
           {...register("email", { required: true })}
         />
       </div>
-      <div>
+      <div className="flex flex-col">
         <label htmlFor="password">password</label>
         <input
           type="text"
