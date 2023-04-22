@@ -28,12 +28,18 @@ body {
 .form-submit {
   @apply bg-rose-500  text-white  text-base hover:bg-rose-500/70;
 }
+.form-submit:is(.disabled) {
+  @apply bg-rose-500/60 hover:bg-rose-500/60;
+}
 
 .btn {
   @apply p-2 rounded-md capitalize outline-none font-nunito transition ease-in-out duration-200;
 }
 .btn-social {
   @apply bg-white border relative border-gray-400 hover:bg-white/20;
+}
+.btn-social:is(.disabled) {
+  @apply bg-black/5 hover:bg-black/5;
 }
 
 .form-label {

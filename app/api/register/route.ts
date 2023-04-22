@@ -1,6 +1,6 @@
 import { hash } from "bcrypt";
 import prisma from "../../lib/prismaClient";
-import { IUserForm } from "@/app/Models/User.model";
+import { IUserForm } from "@/app/Models/UserModel";
 import { NextResponse } from "next/server";
 import { ErrorMap } from "@/app/constants/errorMap";
 

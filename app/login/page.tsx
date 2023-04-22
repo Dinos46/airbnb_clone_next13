@@ -1,4 +1,4 @@
-import Logister from "../components/Logister/Logister.component";
+import Logister from "../components/Logister/Logister";
 
 const UserLogIn = () => {
   return (

@@ -1,10 +1,10 @@
 "use client";
-import Logo from "./Logo.component";
-import SearchBar from "../Search-Bar/SearchBar.component";
-import UserMenu from "../UserMenu/User-Menu.component";
+import Logo from "./Logo";
+import SearchBar from "../Search-Bar/SearchBar";
+import UserMenu from "../UserMenu/UserMenu";
 import { User } from "@prisma/client";
-import UserMenuItem from "../UserMenu/User-Menu-Item";
-import GuestMenuItem from "../UserMenu/Guest-Menu-Item";
+import UserMenuItem from "../UserMenu/UserMenuItem";
+import GuestMenuItem from "../UserMenu/GuestMenuItem";
 
 type Props = {
   user?: User;

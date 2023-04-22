@@ -1,12 +1,13 @@
 "use client";
-import { FormValues } from "@/app/Models/User.model";
+import { FormValues } from "@/app/Models/UserModel";
 import { registerUser } from "@/app/services/userService";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
-import { FcGoogle } from "react-icons/fc";
-import { FaGithub } from "react-icons/fa";
 import { BiUserCircle } from "react-icons/bi";
+import Input from "../Input/Input";
+import SocialButton from "./SocialButton";
+import { BeatLoader } from "react-spinners";
 
 type Props = {
   formVals: FormValues;
@@ -17,20 +18,31 @@ const Logister = ({ formVals, type }: Props) => {
   const [subTitle] = useState(
     type === "login" ? "log in with your acount" : "create an acount"
   );
-  const { register, handleSubmit } = useForm<FormValues>({
+  const [isLoading, setIsLoading] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<FormValues>({
     defaultValues: formVals,
   });
 
   const submitHandler: SubmitHandler<FormValues> = async (formInput) => {
+    setIsLoading(true);
     try {
       if (type === "register") {
         await registerUser(formInput);
+        return;
       }
-      signIn("credentials", {
+      await signIn("credentials", {
         ...formInput,
       });
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
+      reset();
     }
   };
 
@@ -47,55 +59,51 @@ const Logister = ({ formVals, type }: Props) => {
         <h3 className="mb-4 self-center capitalize text-gray-500/80 text-[0.9rem]">
           {subTitle}
         </h3>
+
         {type === "register" && (
-          <div className="flex flex-col mb-5">
-            <label htmlFor="username" className="form-label">
-              username:
-            </label>
-            <input
-              className="form-input"
-              type="text"
-              id="username"
-              {...register("username", { required: true })}
-            />
-          </div>
+          <Input
+            id="username"
+            label="username"
+            register={register}
+            required
+            errors={errors}
+          />
         )}
-        <div className="flex flex-col mb-5">
-          <label htmlFor="email" className="form-label">
-            email:
-          </label>
-          <input
-            className="form-input"
-            type="text"
-            id="email"
-            {...register("email", { required: true })}
-          />
-        </div>
-        <div className="flex flex-col mb-5">
-          <label htmlFor="password" className="form-label">
-            password:
-          </label>
-          <input
-            className="form-input"
-            type="text"
-            id="password"
-            {...register("password", { required: true })}
-          />
-        </div>
-        <button className="form-submit btn mt-4">continue</button>
+        <Input
+          id="email"
+          label="email"
+          register={register}
+          required
+          errors={errors}
+        />
+        <Input
+          id="password"
+          label="password"
+          register={register}
+          required
+          errors={errors}
+        />
+
+        <button
+          disabled={isLoading}
+          className={`mt-4 form-submit ${isLoading ? "disabled" : ""} btn`}
+        >
+          continue
+        </button>
         <div className="flex items-center justify-between my-4">
           <div className="bg-slate-200/50 h-[2px] w-[44%]"></div>
           <span className="text-base text-gray-400">or</span>
           <div className=" bg-slate-200/50 h-[2px] w-[47%]"></div>
         </div>
-        <button className="btn btn-social">
-          continue with google
-          <FcGoogle size={20} className="absolute top-2.5" />
-        </button>
-        <button className="btn btn-social mt-4">
-          continue with github
-          <FaGithub size={20} className="absolute top-2.5" />
-        </button>
+        <SocialButton isLoading={isLoading} />
+        <BeatLoader
+          className=" self-center mt-4"
+          color={"#f43f5e"}
+          loading={isLoading}
+          size={15}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
       </form>
     </div>
   );

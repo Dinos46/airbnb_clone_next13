@@ -1,4 +1,4 @@
-import { FormValues } from "../Models/User.model";
+import { FormValues } from "../Models/UserModel";
 import { http } from "./apiService";
 
 export const registerUser = (userInfo: FormValues) => {

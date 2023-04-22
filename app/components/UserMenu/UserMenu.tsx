@@ -1,10 +1,8 @@
 "use client";
 import { useClickAwayLisiner } from "@/app/hooks/useClickAwayLisiner";
-import { signOut } from "next-auth/react";
-import Link from "next/link";
 import { ReactNode, useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
-import { FaUserCircle } from "react-icons/fa";
+import { BiUserCircle } from "react-icons/bi";
 
 type Props = {
   children: ReactNode;
@@ -29,7 +27,7 @@ const UserMenu = ({ children }: Props) => {
       <div ref={menuRef}>
         <div className="serch-bar-item flex gap-4" onClick={handleUserMenuOpen}>
           <AiOutlineMenu size={17} />
-          <FaUserCircle size={28} className="text-gray-500" />
+          <BiUserCircle size={28} className="text-gray-500" />
         </div>
 
         {isOpen && children}
