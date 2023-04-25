@@ -1,3 +1,3 @@
 import { categoryMap } from "../constants/categoryMap";
 
-export type Category = typeof categoryMap[1];
+export type CategoryMap = (typeof categoryMap)[1];

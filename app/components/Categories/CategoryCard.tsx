@@ -1,7 +1,8 @@
 "use client";
+import { IconType } from "react-icons";
 
 type Props = {
-  Icon: any;
+  Icon: IconType;
   label: string;
   selected: boolean;
   onSelect: (label: string) => void;
@@ -10,7 +11,7 @@ type Props = {
 const CategoryCard = ({ Icon, label, onSelect, selected }: Props) => {
   return (
     <div
-      className={`flex flex-col   items-center hover:text-neutral-800 cursor-pointer transition ${
+      className={`flex flex-col   items-center hover:text-neutral-500 cursor-pointer transition ${
         selected ? "text-gray-400" : "text-gray-600"
       }`}
       onClick={() => onSelect(label)}
