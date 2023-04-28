@@ -7,6 +7,9 @@ import { getServerSession } from "next-auth";
 import { getLogedInUser } from "./utils/getCurrUser";
 import CategoryList from "./components/Categories/CategoryList";
 import ClientOnley from "./components/ClientOnley/ClientOnley";
+import { useCategory } from "./store/CategoryStore";
+import AppModal from "./components/AppModal/AppModal";
+import ListingForm from "./components/ListingForm/ListingForm";
 
 const nunito = Nunito({
   subsets: ["latin"],
@@ -28,6 +31,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className={`${nunito.variable} font-nunito`}>
         <ClientOnley>
+          <ListingForm />
           <Header user={logedInUser} />
           <CategoryList />
         </ClientOnley>

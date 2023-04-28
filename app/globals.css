@@ -31,9 +31,15 @@ body {
 .form-submit:is(.disabled) {
   @apply bg-rose-500/60 hover:bg-rose-500/60;
 }
+.form-regular {
+  @apply bg-white text-base border border-black hover:bg-slate-100;
+}
+.form-regular:is(.disabled) {
+  @apply bg-rose-500/60 hover:bg-rose-500/60;
+}
 
 .btn {
-  @apply p-2 rounded-md capitalize outline-none font-nunito transition ease-in-out duration-200;
+  @apply p-2 rounded-md capitalize outline-none font-nunito transition ease-in-out duration-500;
 }
 .btn-social {
   @apply bg-white border relative border-gray-400 hover:bg-white/20;

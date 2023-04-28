@@ -8,6 +8,7 @@ import { BiUserCircle } from "react-icons/bi";
 import Input from "../Input/Input";
 import SocialButton from "./SocialButton";
 import { BeatLoader } from "react-spinners";
+import Button from "../Button/Button";
 
 type Props = {
   formVals: FormValues;
@@ -84,12 +85,7 @@ const Logister = ({ formVals, type }: Props) => {
           errors={errors}
         />
 
-        <button
-          disabled={isLoading}
-          className={`mt-4 form-submit ${isLoading ? "disabled" : ""} btn`}
-        >
-          continue
-        </button>
+        <Button disabled={isLoading} title="continue" className="form-submit" />
         <div className="flex items-center justify-between my-4">
           <div className="bg-slate-200/50 h-[2px] w-[44%]"></div>
           <span className="text-base text-gray-400">or</span>

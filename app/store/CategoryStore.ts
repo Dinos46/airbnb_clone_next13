@@ -1,5 +1,4 @@
-import { create, useStore } from "zustand";
-// import { CategoryMap } from "../Models/CategoryModel";
+import { create } from "zustand";
 import { categoryMap } from "../constants/categoryMap";
 import { Category } from "prisma/prisma-client";
 import { getAllCategories } from "../services/categoryService";

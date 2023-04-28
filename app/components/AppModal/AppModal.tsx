@@ -1,18 +1,24 @@
 "use client";
+
 import { ReactNode } from "react";
 
 type Props = {
-  title?: string;
-  Body?: ReactNode;
+  title?: ReactNode;
+  body?: ReactNode;
+  footer?: ReactNode;
+  isOpen?: boolean;
 };
 
-const AppModal = ({ Body, title = "" }: Props) => {
+const AppModal = ({ body, title, isOpen, footer }: Props) => {
+  if (!isOpen) return null;
+
   return (
-    <div className="absolute shadow border-[1px] py-2 w-full inset-0 z-50 bg-white rounded-lg">
-      <div>
-        <h2>{title}</h2>
+    <div className="absolute flex inset-0 bg-black/60 items-center justify-center z-40">
+      <div className="shadow border-[1px] bg-white rounded-lg min-w-[30%] relative">
+        {title}
+        {body}
+        {footer}
       </div>
-      <div>{Body}</div>
     </div>
   );
 };
