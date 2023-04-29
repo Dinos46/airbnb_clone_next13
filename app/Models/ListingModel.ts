@@ -1,6 +1,8 @@
+import { Country } from "../hooks/useCountries";
+
 export interface Listing {
-  category: string[];
-  location: any;
+  category: Set<string>;
+  location: Country | undefined;
   guestCount: number;
   roomCount: number;
   bathroomCount: number;

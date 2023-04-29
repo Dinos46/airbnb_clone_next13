@@ -14,7 +14,7 @@ const AppModal = ({ body, title, isOpen, footer }: Props) => {
 
   return (
     <div className="absolute flex inset-0 bg-black/60 items-center justify-center z-40">
-      <div className="shadow border-[1px] bg-white rounded-lg min-w-[30%] relative">
+      <div className="shadow border-[1px] bg-white rounded-lg min-w-[35%] relative">
         {title}
         {body}
         {footer}

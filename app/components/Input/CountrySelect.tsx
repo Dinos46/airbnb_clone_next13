@@ -1,24 +1,40 @@
 "use client";
 import { useCountries } from "@/app/hooks/useCountries";
+import { useListing } from "@/app/store/ListingStore";
 import Image from "next/image";
 import Select from "react-select";
 
-const CountrySelect = () => {
+type Props = {};
+
+const CountrySelect = ({}: Props) => {
   const { getAllCountries } = useCountries();
+  const location = useListing((state) => state.getLocation());
+  const setLocation = useListing((state) => state.setLocation);
+
+  const onSelect = (val: any) => {
+    setLocation(val);
+  };
+
   return (
     <div>
       <Select
+        value={location}
+        onChange={onSelect}
         isClearable
         placeholder="Anywhere"
         options={getAllCountries()}
         formatOptionLabel={(data) => {
           return (
             <div className="flex flex-row items-center gap-3">
-              {/* <Image src={data.flag} width={10} height={10} alt="" /> */}
-              <img src={data.flag} width={20} alt="" />
+              <Image
+                src={data?.flag || ""}
+                width={20}
+                height={20}
+                alt={`${data?.label} flag`}
+              />
               <div>
-                {data.label},
-                <span className="text-neutral-800 ml-2">{data.region}</span>
+                {data?.label},
+                <span className="text-neutral-800 ml-2">{data?.region}</span>
               </div>
             </div>
           );

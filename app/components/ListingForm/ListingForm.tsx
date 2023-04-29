@@ -1,51 +1,27 @@
 "use client";
 
-import { Listing } from "@/app/Models/ListingModel";
-import { SubmitHandler, useForm } from "react-hook-form";
-import Button from "../Button/Button";
-import AppModal from "../AppModal/AppModal";
 import { useListing } from "@/app/store/ListingStore";
+import { FormEventHandler, useState } from "react";
+import CategoryStep from "./CategoryStep";
+import LocationStep from "./LocationStep";
+import InfoStep from "./InfoStep";
+import AppModal from "../AppModal/AppModal";
 import { GrFormClose } from "react-icons/gr";
-import { useCategory } from "@/app/store/CategoryStore";
-import CategoryInput from "./CategoryInput";
-import { DevTool } from "@hookform/devtools";
-import { useState } from "react";
-import LocationInput from "./LocationInput";
+import Button from "../Button/Button";
 
 function ListingForm() {
   const { isOpen, onClose } = useListing();
   const [activStep, setActiveStep] = useState(0);
 
-  const {
-    formState: { errors },
-    register,
-    reset,
-    setValue,
-    control,
-    handleSubmit,
-  } = useForm<Listing>({
-    defaultValues: {
-      category: [],
-      bathroomCount: 0,
-      description: "",
-      guestCount: 0,
-      imageSrc: "",
-      location: "",
-      price: 0,
-      roomCount: 0,
-      title: "",
-    },
-  });
-
   const formStep: Record<number, JSX.Element> = {
-    0: <CategoryInput setValue={setValue} />,
-    1: <LocationInput />,
-    2: <CategoryInput setValue={setValue} />,
-    3: <CategoryInput setValue={setValue} />,
+    0: <CategoryStep />,
+    1: <LocationStep />,
+    2: <InfoStep />,
   };
 
-  const onSubmit: SubmitHandler<Listing> = (values) => {
-    console.log(values);
+  const onSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+    // console.log(values);
   };
 
   const onNext = () => {
@@ -64,7 +40,7 @@ function ListingForm() {
 
   return (
     <section>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={onSubmit}>
         <AppModal
           isOpen={isOpen}
           title={
@@ -104,7 +80,6 @@ function ListingForm() {
           }
         />
       </form>
-      <DevTool control={control} />
     </section>
   );
 }
