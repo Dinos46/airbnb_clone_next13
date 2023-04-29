@@ -23,7 +23,7 @@ const Heading = ({
         {mainTitle}
       </h2>
       <h3
-        className={`text-center p-2 text-neutral-400 font-medium ${subTitleClass}`}
+        className={`text-center text-neutral-400 font-medium ${subTitleClass}`}
       >
         {subTitle}
       </h3>

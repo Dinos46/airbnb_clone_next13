@@ -16,7 +16,10 @@ function CategoryStep({}: Props) {
 
   return (
     <>
-      <Heading subTitle="which of these describes your place?" />
+      <Heading
+        subTitle="which of these describes your place?"
+        subTitleClass="mt-4"
+      />
       <section className="grid grid-cols-1 p-5 md:grid-cols-2 lg:grid-cols-3 cursor-pointer overflow-x-auto gap-2 ">
         {categories.map((ctg, idx) => {
           return (

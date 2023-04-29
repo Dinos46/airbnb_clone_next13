@@ -8,6 +8,7 @@ import InfoStep from "./InfoStep";
 import AppModal from "../AppModal/AppModal";
 import { GrFormClose } from "react-icons/gr";
 import Button from "../Button/Button";
+import ImageStep from "./ImageStep";
 
 function ListingForm() {
   const { isOpen, onClose } = useListing();
@@ -17,6 +18,7 @@ function ListingForm() {
     0: <CategoryStep />,
     1: <LocationStep />,
     2: <InfoStep />,
+    3: <ImageStep />,
   };
 
   const onSubmit: FormEventHandler<HTMLFormElement> = (e) => {
