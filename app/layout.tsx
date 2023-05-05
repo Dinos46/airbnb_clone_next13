@@ -2,13 +2,9 @@ import "./globals.css";
 import { ReactNode } from "react";
 import Header from "./components/Header/Header";
 import { Nunito } from "next/font/google";
-import { authOptions } from "@/pages/api/auth/[...nextauth]";
-import { getServerSession } from "next-auth";
 import { getLogedInUser } from "./utils/getCurrUser";
 import CategoryList from "./components/Categories/CategoryList";
 import ClientOnley from "./components/ClientOnley/ClientOnley";
-import { useCategory } from "./store/CategoryStore";
-import AppModal from "./components/AppModal/AppModal";
 import ListingForm from "./components/ListingForm/ListingForm";
 
 const nunito = Nunito({

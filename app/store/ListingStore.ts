@@ -18,7 +18,7 @@ type State = {
 };
 
 export const useListing = create<State>((set, get) => ({
-  isOpen: true,
+  isOpen: false,
   onClose: () => {
     set({ isOpen: false });
   },
@@ -30,7 +30,7 @@ export const useListing = create<State>((set, get) => ({
     bathroomCount: 1,
     description: "",
     guestCount: 1,
-    imageSrc: "",
+    imageSrc: [],
     location: undefined,
     price: 0,
     roomCount: 1,

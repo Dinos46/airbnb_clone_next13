@@ -9,6 +9,7 @@ import Input from "../Input/Input";
 import SocialButton from "./SocialButton";
 import { BeatLoader } from "react-spinners";
 import Button from "../Button/Button";
+import { useRouter } from "next/navigation";
 
 type Props = {
   formVals: FormValues;
@@ -20,6 +21,7 @@ const Logister = ({ formVals, type }: Props) => {
     type === "login" ? "log in with your acount" : "create an acount"
   );
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -34,11 +36,14 @@ const Logister = ({ formVals, type }: Props) => {
     try {
       if (type === "register") {
         await registerUser(formInput);
+        router.push("/");
         return;
       }
+
       await signIn("credentials", {
         ...formInput,
       });
+      router.replace("/");
     } catch (error) {
       console.log(error);
     } finally {

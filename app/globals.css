@@ -51,3 +51,29 @@ body {
 .form-label {
   @apply mb-2 text-sm text-gray-500 capitalize;
 }
+
+.grid-listing-img {
+  grid-template-columns: repeat(5, minmax(8rem, 1fr));
+
+  grid-template-areas:
+    "main main main img1 img2"
+    "main main main img1 img2"
+    "main main main img3 img4"
+    "main main main img3 img4";
+}
+
+.grid-listing-main {
+  grid-area: main;
+}
+.grid-listing-img1 {
+  grid-area: img1;
+}
+.grid-listing-img2 {
+  grid-area: img2;
+}
+.grid-listing-img3 {
+  grid-area: img3;
+}
+.grid-listing-img4 {
+  grid-area: img4;
+}

@@ -1,43 +1,74 @@
 "use client";
-import { CldUploadWidget } from "next-cloudinary";
+import { http } from "@/app/services/apiService";
+import Image from "next/image";
+import { ChangeEvent, useRef, useState } from "react";
 import { TbPhotoPlus } from "react-Icons/tb";
+import { BsCheckLg } from "react-Icons/bs";
+import { BiUndo } from "react-icons/bi";
 
-declare global {
-  var cloudinary: any;
-}
+const ImageUpload = ({ className }: { className?: string }) => {
+  const [imag, setImg] = useState<string | ArrayBuffer | null | undefined>("");
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
-const ImageUpload = () => {
-  const uploadFile = (res: any) => {
-    console.log(res.info.secure_url);
+  const uploadFile = async ({ target }: ChangeEvent<HTMLInputElement>) => {
+    if (!target.files?.length) return;
+    const formData = new FormData();
+    formData.append("file", target.files[0]);
+    const fileReader = new FileReader();
+    fileReader.onload = (ev: ProgressEvent<FileReader>) => {
+      // http
+      //   .post("/listingImg", { img: ev.target?.result })
+      //   .then(({ data }) => {
+      //     console.log({ data });
+      //   })
+      //   .catch(console.log);
+      setImg(ev.target?.result);
+    };
+    fileReader.readAsDataURL(target.files[0]);
   };
 
-  const onError = (err: any) => {
-    console.log("ERR", err);
+  const onConfirm = () => {};
+
+  const onRetake = () => {
+    setImg("");
+    if (!inputRef?.current?.value) return;
+    inputRef.current.value = "";
   };
 
   return (
-    <div className="p-4">
-      <CldUploadWidget
-        uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_PRESET}
-        onUpload={uploadFile}
-        options={{
-          maxFiles: 1,
-        }}
-        onError={onError}
-      >
-        {({ open }) => {
-          return (
-            <section className="w-full flex flex-col border-[2px] border-dashed border-neutral-200 min-h-[200px] items-center justify-center">
-              <button className="" onClick={() => open?.()}>
-                <TbPhotoPlus size={40} />
+    <div className={` ${className}`}>
+      <section className="w-full relative flex flex-col border-[2px] border-dashed border-neutral-200 p-2 min-h-full items-center justify-center">
+        {imag ? (
+          <div className=" w-full absolute top-0  bottom-0 left-0 right-0">
+            <Image src={imag as string} alt="" fill />
+            <div className="bg-black/50 absolute bottom-0 left-0 right-0 top-150 p-2 flex justify-between">
+              <button className="text-white" onClick={onConfirm}>
+                <BsCheckLg size={18} />
               </button>
-              <h4 className="text-lg font-bold text-neutral-800 mt-2">
-                click to upload
-              </h4>
-            </section>
-          );
-        }}
-      </CldUploadWidget>
+              <button className="text-white" onClick={onRetake}>
+                <BiUndo size={18} />
+              </button>
+            </div>
+          </div>
+        ) : (
+          <>
+            <label htmlFor="img-upload">
+              <TbPhotoPlus size={30} />
+            </label>
+
+            <h4 className="text-base font-semibold text-neutral-800 mt-2">
+              click to upload
+            </h4>
+          </>
+        )}
+        <input
+          type="file"
+          id="img-upload"
+          hidden
+          onChange={uploadFile}
+          ref={inputRef}
+        />
+      </section>
     </div>
   );
 };

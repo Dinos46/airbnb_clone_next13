@@ -5,6 +5,7 @@ import UserMenu from "../UserMenu/UserMenu";
 import { User } from "@prisma/client";
 import UserMenuItem from "../UserMenu/UserMenuItem";
 import GuestMenuItem from "../UserMenu/GuestMenuItem";
+import { useLogedInUser } from "@/app/store/UserStore";
 
 type Props = {
   user?: User;
@@ -16,7 +17,9 @@ const Header = ({ user }: Props) => {
       <nav className="container flex justify-between ">
         <Logo />
         <SearchBar />
-        <UserMenu>{user ? <UserMenuItem /> : <GuestMenuItem />}</UserMenu>
+        <UserMenu user={user}>
+          {user ? <UserMenuItem /> : <GuestMenuItem />}
+        </UserMenu>
       </nav>
     </header>
   );

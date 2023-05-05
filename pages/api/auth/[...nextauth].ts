@@ -29,16 +29,14 @@ export const authOptions: AuthOptions = {
           throw new Error(ErrorMap.invalid);
         }
 
-        const user = await prisma.user.findUnique({
+        const user = await prisma?.user.findUnique({
           where: {
             email: credentials.email,
           },
         });
-        console.log({ user });
         if (user) {
           return user;
         }
-
         return null;
       },
     }),
@@ -48,8 +46,9 @@ export const authOptions: AuthOptions = {
   },
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
+    redirect: () => "/",
     async session({ session, user, token }) {
-      const dbUser = await prisma.user.findUnique({
+      const dbUser = await prisma?.user.findUnique({
         where: {
           email: token.email as string,
         },
@@ -67,7 +66,7 @@ export const authOptions: AuthOptions = {
       return session;
     },
   },
-  adapter: PrismaAdapter(prisma),
+  adapter: PrismaAdapter(prisma as any),
 
   pages: {
     signIn: "/login",

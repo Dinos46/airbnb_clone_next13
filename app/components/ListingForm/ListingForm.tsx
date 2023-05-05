@@ -59,7 +59,7 @@ function ListingForm() {
           }
           body={formStep[activStep]}
           footer={
-            <section className={`p-5 w-full flex gap-2 justify-between`}>
+            <section className={`p-5 w-full flex gap-2 justify-between mt-6`}>
               {activStep !== 0 && (
                 <Button
                   type="button"

@@ -1,17 +1,21 @@
 "use client";
 import { useClickAwayLisiner } from "@/app/hooks/useClickAwayLisiner";
 import { useListing } from "@/app/store/ListingStore";
+import { User } from "@prisma/client";
+import { useRouter } from "next/navigation";
 import { ReactNode, useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import { BiUserCircle } from "react-icons/bi";
 
 type Props = {
   children: ReactNode;
+  user?: User;
 };
 
-const UserMenu = ({ children }: Props) => {
+const UserMenu = ({ children, user }: Props) => {
   const onOpen = useListing((state) => state.onOpen);
   const open = useListing((state) => state.isOpen);
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleUserMenuOpen = () => {
@@ -23,7 +27,11 @@ const UserMenu = ({ children }: Props) => {
   });
 
   const handleOpenListingModal = () => {
-    onOpen();
+    if (user) {
+      onOpen();
+      return;
+    }
+    router.push("/register");
   };
 
   return (
