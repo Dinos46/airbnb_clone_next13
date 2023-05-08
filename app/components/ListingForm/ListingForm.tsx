@@ -11,7 +11,7 @@ import Button from "../Button/Button";
 import ImageStep from "./ImageStep";
 
 function ListingForm() {
-  const { isOpen, onClose } = useListing();
+  const { isOpen, onClose, resetListing } = useListing();
   const [activStep, setActiveStep] = useState(0);
 
   const formStep: Record<number, JSX.Element> = {
@@ -24,6 +24,12 @@ function ListingForm() {
   const onSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     // console.log(values);
+  };
+
+  const onCloseModal = () => {
+    onClose();
+    setActiveStep(0);
+    resetListing();
   };
 
   const onNext = () => {
@@ -48,7 +54,7 @@ function ListingForm() {
           title={
             <section className="flex p-5 shadow-sm items-center justify-center">
               <GrFormClose
-                onClick={onClose}
+                onClick={onCloseModal}
                 size={30}
                 className="cursor-pointer absolute left-1"
               />

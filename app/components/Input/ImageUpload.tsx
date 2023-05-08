@@ -5,10 +5,12 @@ import { ChangeEvent, useRef, useState } from "react";
 import { TbPhotoPlus } from "react-Icons/tb";
 import { BsCheckLg } from "react-Icons/bs";
 import { BiUndo } from "react-icons/bi";
+import { useListing } from "@/app/store/ListingStore";
 
 const ImageUpload = ({ className }: { className?: string }) => {
-  const [imag, setImg] = useState<string | ArrayBuffer | null | undefined>("");
+  const [img, setImg] = useState<string>("");
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const addImgSrc = useListing((state) => state.addImgSrc);
 
   const uploadFile = async ({ target }: ChangeEvent<HTMLInputElement>) => {
     if (!target.files?.length) return;
@@ -22,12 +24,14 @@ const ImageUpload = ({ className }: { className?: string }) => {
       //     console.log({ data });
       //   })
       //   .catch(console.log);
-      setImg(ev.target?.result);
+      setImg(ev.target?.result as string);
     };
     fileReader.readAsDataURL(target.files[0]);
   };
 
-  const onConfirm = () => {};
+  const onConfirm = () => {
+    addImgSrc(img);
+  };
 
   const onRetake = () => {
     setImg("");
@@ -38,9 +42,9 @@ const ImageUpload = ({ className }: { className?: string }) => {
   return (
     <div className={` ${className}`}>
       <section className="w-full relative flex flex-col border-[2px] border-dashed border-neutral-200 p-2 min-h-full items-center justify-center">
-        {imag ? (
+        {img ? (
           <div className=" w-full absolute top-0  bottom-0 left-0 right-0">
-            <Image src={imag as string} alt="" fill />
+            <Image src={img as string} alt="" fill />
             <div className="bg-black/50 absolute bottom-0 left-0 right-0 top-150 p-2 flex justify-between">
               <button className="text-white" onClick={onConfirm}>
                 <BsCheckLg size={18} />
@@ -51,15 +55,15 @@ const ImageUpload = ({ className }: { className?: string }) => {
             </div>
           </div>
         ) : (
-          <>
+          <div className="h-52 flex flex-col items-center justify-center">
             <label htmlFor="img-upload">
               <TbPhotoPlus size={30} />
             </label>
 
-            <h4 className="text-base font-semibold text-neutral-800 mt-2">
+            <h4 className="text-base font-semibold text-neutral-800 ">
               click to upload
             </h4>
-          </>
+          </div>
         )}
         <input
           type="file"

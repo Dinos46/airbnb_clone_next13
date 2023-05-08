@@ -6,7 +6,7 @@ export interface Listing {
   guestCount: number;
   roomCount: number;
   bathroomCount: number;
-  imageSrc: string[];
+  imageSrc: string;
   price: number;
   title: string;
   description: string;

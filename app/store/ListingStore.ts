@@ -15,6 +15,22 @@ type State = {
     type: keyof Pick<Listing, "bathroomCount" | "guestCount" | "roomCount">,
     action: "inc" | "dec"
   ) => void;
+  addImgSrc: (img: string) => void;
+  resetListing: () => void;
+};
+
+const setInitialState = () => {
+  return {
+    category: new Set<string>(),
+    bathroomCount: 1,
+    description: "",
+    guestCount: 1,
+    imageSrc: "",
+    location: undefined,
+    price: 0,
+    roomCount: 1,
+    title: "",
+  };
 };
 
 export const useListing = create<State>((set, get) => ({
@@ -25,17 +41,8 @@ export const useListing = create<State>((set, get) => ({
   onOpen: () => {
     set({ isOpen: true });
   },
-  listing: {
-    category: new Set<string>(),
-    bathroomCount: 1,
-    description: "",
-    guestCount: 1,
-    imageSrc: [],
-    location: undefined,
-    price: 0,
-    roomCount: 1,
-    title: "",
-  },
+  listing: setInitialState(),
+
   setLocation: (location) => {
     set((state) => ({
       ...state,
@@ -82,5 +89,24 @@ export const useListing = create<State>((set, get) => ({
         };
       });
     }
+  },
+  addImgSrc: (img) => {
+    set((state) => {
+      return {
+        ...state,
+        listing: {
+          ...state.listing,
+          imageSrc: img,
+        },
+      };
+    });
+  },
+  resetListing: () => {
+    set((prev) => {
+      return {
+        ...prev,
+        listing: setInitialState(),
+      };
+    });
   },
 }));
