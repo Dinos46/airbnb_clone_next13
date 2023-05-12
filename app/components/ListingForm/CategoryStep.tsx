@@ -2,16 +2,21 @@
 import { useCategory } from "@/app/store/CategoryStore";
 import { useListing } from "@/app/store/ListingStore";
 import Heading from "../Heading/Heading";
+import { useFormContext } from "react-hook-form";
+import { Listing } from "@/app/Models/ListingModel";
 
 type Props = {};
 
 function CategoryStep({}: Props) {
+  const { setValue } = useFormContext<Listing>();
+
   const categories = useCategory((state) => state.categories);
   const categorySet = useListing((state) => state.getCtgSet());
   const setCategpry = useListing((state) => state.setCategory);
 
   const onSelectCategory = (id: string) => {
     setCategpry(id);
+    setValue("category", categorySet);
   };
 
   return (

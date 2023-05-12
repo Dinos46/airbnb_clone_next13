@@ -18,7 +18,7 @@ const Heading = ({
   return (
     <div className={`my-2 ${containerClass}`}>
       <h2
-        className={`text-center text-neutral-600 font-bold text-lg ${mainTitleClass}`}
+        className={`text-center text-neutral-600 font-bold text-lg first-letter:capitalize ${mainTitleClass}`}
       >
         {mainTitle}
       </h2>

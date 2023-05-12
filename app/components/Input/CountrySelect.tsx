@@ -3,16 +3,19 @@ import { useCountries } from "@/app/hooks/useCountries";
 import { useListing } from "@/app/store/ListingStore";
 import Image from "next/image";
 import Select from "react-select";
+import { useFormContext } from "react-hook-form";
+import { Listing } from "@/app/Models/ListingModel";
 
 type Props = {};
 
 const CountrySelect = ({}: Props) => {
+  const { setValue } = useFormContext<Listing>();
+
   const { getAllCountries } = useCountries();
   const location = useListing((state) => state.getLocation());
-  const setLocation = useListing((state) => state.setLocation);
 
   const onSelect = (val: any) => {
-    setLocation(val);
+    setValue("location", val);
   };
 
   return (

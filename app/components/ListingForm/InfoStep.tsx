@@ -1,8 +1,11 @@
 import { useListing } from "@/app/store/ListingStore";
 import ListingCounter from "./ListingCounter";
 import { Listing } from "@/app/Models/ListingModel";
+import { useFormContext } from "react-hook-form";
 
 const InfoStep = () => {
+  const { setValue, watch } = useFormContext<Listing>();
+
   const bathroomCount = useListing((state) => state.listing.bathroomCount);
   const guestCount = useListing((state) => state.listing.guestCount);
   const roomCount = useListing((state) => state.listing.roomCount);
@@ -13,6 +16,12 @@ const InfoStep = () => {
     type: keyof Pick<Listing, "bathroomCount" | "guestCount" | "roomCount">
   ) => {
     setCount(type, action);
+    const count = watch(type);
+    if (action === "inc") {
+      setValue(type, count + 1);
+      return;
+    }
+    setValue(type, count - 1);
   };
 
   return (

@@ -6,6 +6,7 @@ type State = {
   onOpen: () => void;
   onClose: () => void;
   isOpen: boolean;
+  isSubmit: boolean;
   listing: Listing;
   getCtgSet: () => Listing["category"];
   getLocation: () => Listing["location"];
@@ -17,6 +18,10 @@ type State = {
   ) => void;
   addImgSrc: (img: string) => void;
   resetListing: () => void;
+  setTitle: (title: string) => void;
+  setDescription: (desc: string) => void;
+  setPrice: (price: number) => void;
+  setIsSubmit: (submit: boolean) => void;
 };
 
 const setInitialState = () => {
@@ -42,7 +47,7 @@ export const useListing = create<State>((set, get) => ({
     set({ isOpen: true });
   },
   listing: setInitialState(),
-
+  isSubmit: false,
   setLocation: (location) => {
     set((state) => ({
       ...state,
@@ -106,6 +111,47 @@ export const useListing = create<State>((set, get) => ({
       return {
         ...prev,
         listing: setInitialState(),
+      };
+    });
+  },
+  setTitle: (title) => {
+    set((state) => {
+      return {
+        ...state,
+        listing: {
+          ...state.listing,
+          title,
+        },
+      };
+    });
+  },
+  setDescription: (description) => {
+    set((state) => {
+      return {
+        ...state,
+        listing: {
+          ...state.listing,
+          description,
+        },
+      };
+    });
+  },
+  setPrice: (price) => {
+    set((state) => {
+      return {
+        ...state,
+        listing: {
+          ...state.listing,
+          price: parseInt(price.toFixed(2)),
+        },
+      };
+    });
+  },
+  setIsSubmit: (submit) => {
+    set((state) => {
+      return {
+        ...state,
+        isSubmit: submit,
       };
     });
   },

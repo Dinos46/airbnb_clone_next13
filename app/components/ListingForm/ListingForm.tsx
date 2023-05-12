@@ -1,7 +1,7 @@
 "use client";
 
 import { useListing } from "@/app/store/ListingStore";
-import { FormEventHandler, useState } from "react";
+import { useState } from "react";
 import CategoryStep from "./CategoryStep";
 import LocationStep from "./LocationStep";
 import InfoStep from "./InfoStep";
@@ -9,33 +9,75 @@ import AppModal from "../AppModal/AppModal";
 import { GrFormClose } from "react-icons/gr";
 import Button from "../Button/Button";
 import ImageStep from "./ImageStep";
+import DescriptionStep from "./DescriptionStep";
+import PriceStep from "./PriceStep";
+import { SubmitHandler, useForm, FormProvider } from "react-hook-form";
+import { Listing } from "@/app/Models/ListingModel";
+import { http } from "@/app/services/apiService";
 
 function ListingForm() {
-  const { isOpen, onClose, resetListing } = useListing();
+  const { isOpen, onClose, resetListing, listing, isSubmit } = useListing();
   const [activStep, setActiveStep] = useState(0);
+
+  const methods = useForm<Listing>({
+    mode: "onChange",
+    defaultValues: {
+      bathroomCount: 1,
+      category: [],
+      description: "",
+      guestCount: 1,
+      imageSrc: "",
+      location: {},
+      price: 0,
+      roomCount: 1,
+      title: "",
+    },
+  });
+  const {
+    handleSubmit,
+    trigger,
+    reset,
+    watch,
+    formState: { isValid },
+  } = methods;
 
   const formStep: Record<number, JSX.Element> = {
     0: <CategoryStep />,
     1: <LocationStep />,
     2: <InfoStep />,
     3: <ImageStep />,
+    4: <DescriptionStep />,
+    5: <PriceStep />,
   };
 
-  const onSubmit: FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
-    // console.log(values);
+  const onSubmit: SubmitHandler<Listing> = async (vals) => {
+    if (watch("price") <= 0) return;
+    try {
+      const { data } = await http.post("/listing", {
+        ...vals,
+        category: Array.from(vals.category),
+      });
+      console.log(data);
+      onCloseModal();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const onCloseModal = () => {
     onClose();
     setActiveStep(0);
     resetListing();
+    reset();
   };
 
-  const onNext = () => {
+  const onNext = async () => {
+    trigger("description");
+    trigger("title");
+    if (!isValid) return;
     setActiveStep((prev) => {
-      if (prev === 6) return prev;
-      return prev + 1;
+      if (prev < 5) return prev + 1;
+      return prev;
     });
   };
 
@@ -48,46 +90,49 @@ function ListingForm() {
 
   return (
     <section>
-      <form onSubmit={onSubmit}>
-        <AppModal
-          isOpen={isOpen}
-          title={
-            <section className="flex p-5 shadow-sm items-center justify-center">
-              <GrFormClose
-                onClick={onCloseModal}
-                size={30}
-                className="cursor-pointer absolute left-1"
-              />
-              <h2 className="capitalize text-lg font-bold">
-                airDnD your home!
-              </h2>
-            </section>
-          }
-          body={formStep[activStep]}
-          footer={
-            <section className={`p-5 w-full flex gap-2 justify-between mt-6`}>
-              {activStep !== 0 && (
-                <Button
-                  type="button"
-                  disabled={false}
-                  title="back"
-                  className="w-2/5 form-regular"
-                  onClick={onBack}
+      <FormProvider {...methods}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <AppModal
+            isOpen={isOpen}
+            title={
+              <section className="flex p-5 shadow-sm items-center justify-center">
+                <GrFormClose
+                  onClick={onCloseModal}
+                  size={30}
+                  className="cursor-pointer absolute left-1"
                 />
-              )}
-              <Button
-                type={activStep < 6 ? "button" : "submit"}
-                disabled={false}
-                title="next"
-                className={`${
-                  activStep !== 0 ? "w-2/5" : "w-full"
-                } form-submit`}
-                onClick={onNext}
-              />
-            </section>
-          }
-        />
-      </form>
+                <h2 className="capitalize text-lg font-bold">
+                  airDnD your home!
+                </h2>
+              </section>
+            }
+            body={formStep[activStep]}
+            footer={
+              <section className={`p-5 w-full flex gap-2 justify-between mt-6`}>
+                {activStep !== 0 && (
+                  <Button
+                    type="button"
+                    disabled={false}
+                    title="back"
+                    className="w-2/5 form-regular"
+                    onClick={onBack}
+                  />
+                )}
+
+                <Button
+                  type={activStep < 5 ? "button" : "submit"}
+                  disabled={false}
+                  title="next"
+                  className={`${
+                    activStep !== 0 ? "w-2/5" : "w-full"
+                  } form-submit`}
+                  onClick={onNext}
+                />
+              </section>
+            }
+          />
+        </form>
+      </FormProvider>
     </section>
   );
 }
