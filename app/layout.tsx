@@ -6,6 +6,7 @@ import { getLogedInUser } from "./utils/getCurrUser";
 import CategoryList from "./components/Categories/CategoryList";
 import ClientOnley from "./components/ClientOnley/ClientOnley";
 import ListingForm from "./components/ListingForm/ListingForm";
+import Logister from "./components/Logister/Logister";
 
 const nunito = Nunito({
   subsets: ["latin"],
@@ -22,12 +23,14 @@ export default async function RootLayout({
   children: ReactNode;
 }) {
   const logedInUser = await getLogedInUser();
+  console.log("USR", logedInUser);
 
   return (
     <html lang="en">
       <body className={`${nunito.variable} font-nunito`}>
         <ClientOnley>
           <ListingForm />
+          <Logister formVals={{ email: "", password: "", username: "" }} />
           <Header user={logedInUser} />
           <CategoryList />
         </ClientOnley>

@@ -1,15 +1,23 @@
+import { useLogister } from "@/app/store/LogisterStore";
 import Link from "next/link";
 
 const GuestMenuItem = () => {
+  const { onOpen, setType } = useLogister();
+
+  const onOpenModal = (type: "login" | "register") => {
+    setType(type);
+    onOpen();
+  };
+
   return (
-    <div className="absolute shadow border-[1px] py-2 w-full top-14 left-0 z-10 bg-white rounded-lg">
-      <Link href="/login" className="user-menu-item">
+    <section className="absolute shadow border-[1px] py-2 w-full top-14 left-0 z-10 bg-white rounded-lg">
+      <div onClick={() => onOpenModal("login")} className="user-menu-item">
         log in
-      </Link>
-      <Link href="/register" className="user-menu-item">
+      </div>
+      <div onClick={() => onOpenModal("register")} className="user-menu-item">
         sign up
-      </Link>
-    </div>
+      </div>
+    </section>
   );
 };
 

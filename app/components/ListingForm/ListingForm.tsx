@@ -16,7 +16,7 @@ import { Listing } from "@/app/Models/ListingModel";
 import { http } from "@/app/services/apiService";
 
 function ListingForm() {
-  const { isOpen, onClose, resetListing, listing, isSubmit } = useListing();
+  const { isOpen, onClose, resetListing } = useListing();
   const [activStep, setActiveStep] = useState(0);
 
   const methods = useForm<Listing>({
@@ -92,45 +92,40 @@ function ListingForm() {
     <section>
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <AppModal
-            isOpen={isOpen}
-            title={
-              <section className="flex p-5 shadow-sm items-center justify-center">
-                <GrFormClose
-                  onClick={onCloseModal}
-                  size={30}
-                  className="cursor-pointer absolute left-1"
-                />
-                <h2 className="capitalize text-lg font-bold">
-                  airDnD your home!
-                </h2>
-              </section>
-            }
-            body={formStep[activStep]}
-            footer={
-              <section className={`p-5 w-full flex gap-2 justify-between mt-6`}>
-                {activStep !== 0 && (
-                  <Button
-                    type="button"
-                    disabled={false}
-                    title="back"
-                    className="w-2/5 form-regular"
-                    onClick={onBack}
-                  />
-                )}
-
+          <AppModal isOpen={isOpen}>
+            <section className="flex p-5 shadow-sm items-center justify-center">
+              <GrFormClose
+                onClick={onCloseModal}
+                size={30}
+                className="cursor-pointer absolute left-1"
+              />
+              <h2 className="capitalize text-lg font-bold">
+                airDnD your home!
+              </h2>
+            </section>
+            {formStep[activStep]}
+            <section className={`p-5 w-full flex gap-2 justify-between mt-6`}>
+              {activStep !== 0 && (
                 <Button
-                  type={activStep < 5 ? "button" : "submit"}
+                  type="button"
                   disabled={false}
-                  title="next"
-                  className={`${
-                    activStep !== 0 ? "w-2/5" : "w-full"
-                  } form-submit`}
-                  onClick={onNext}
+                  title="back"
+                  className="w-2/5 form-regular"
+                  onClick={onBack}
                 />
-              </section>
-            }
-          />
+              )}
+
+              <Button
+                type={activStep < 5 ? "button" : "submit"}
+                disabled={false}
+                title="next"
+                className={`${
+                  activStep !== 0 ? "w-2/5" : "w-full"
+                } form-submit`}
+                onClick={onNext}
+              />
+            </section>
+          </AppModal>
         </form>
       </FormProvider>
     </section>

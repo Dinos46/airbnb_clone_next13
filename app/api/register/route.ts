@@ -9,7 +9,7 @@ export async function POST(req: Request) {
     const body = (await req.json()) as IUserForm;
     const hasPassword = await hash(body.password, 12);
 
-    const user = await prisma.user.create({
+    const user = await prisma?.user.create({
       data: {
         email: body.email,
         name: body.username,

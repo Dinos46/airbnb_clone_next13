@@ -46,7 +46,6 @@ export const authOptions: AuthOptions = {
   },
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
-    redirect: () => "/",
     async session({ session, user, token }) {
       const dbUser = await prisma?.user.findUnique({
         where: {
@@ -69,7 +68,7 @@ export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma as any),
 
   pages: {
-    signIn: "/login",
+    signIn: "/",
   },
   debug: process.env.NODE_ENV === "development",
 };
